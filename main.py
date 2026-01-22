@@ -1,32 +1,24 @@
 import argparse
 import logging
+from library import add_book, list_books
 
-# 1. إعداد التسجيل (Logging) - هذا مطلب أساسي في الصفحة الأولى
-# سنستخدم تنسيقاً احترافياً يظهر الوقت ونوع الرسالة
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s'
-)
+# إعداد التسجيل (Logging)
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 def main():
-    # 2. إعداد واجهة الأوامر (CLI) باستخدام argparse - مطلب الصفحة الأولى
-    parser = argparse.ArgumentParser(description="نظام إدارة المكتبة الإلكترونية")
-    
-    # إضافة خيارات (Flags) ليستخدمها المستخدم في الشاشة السوداء
-    parser.add_argument('--add', type=str, help="إضافة اسم كتاب جديد للمكتبة")
-    parser.add_argument('--list', action='store_true', help="عرض قائمة الكتب المتاحة")
-    
+    parser = argparse.ArgumentParser(description="Electronic Library System")
+    parser.add_argument('--add', help="Add a new book title")
+    parser.add_argument('--list', action='store_true', help="List all books")
+
     args = parser.parse_args()
 
     if args.add:
-        # استخدام Logging بمستوى INFO عند إضافة كتاب
-        logging.info(f"محاولة إضافة كتاب جديد: {args.add}")
-        print(f"✅ تم بنجاح إضافة الكتاب: {args.add}")
+        if add_book(args.add):
+            print(f"Success: {args.add} has been added.")
     elif args.list:
-        logging.info("المستخدم طلب عرض قائمة الكتب")
-        print("📚 قائمة الكتب الحالية فارغة (سيتم ربطها لاحقاً بمصفوفة أو قاعدة بيانات).")
+        all_books = list_books()
+        print(f"Library Content: {all_books}")
     else:
-        # إذا لم يكتب المستخدم أي خيار، تظهر له تعليمات المساعدة تلقائياً
         parser.print_help()
 
 if __name__ == "__main__":
