@@ -43,9 +43,16 @@ def main():
             logging.warning("المكتبة فارغة حالياً!")  # استخدام WARNING
         print(f"📚 الكتب المتاحة: {books}")
 
+    elif args.command == "search":
+        results = search_books(args.query)
+        logging.info(f"Search results for '{args.query}': {results}")
+
     else:
         # رسالة المساعدة التلقائية (مطلب الصفحة 1)
         parser.print_help()
+
+    search_parser = subparsers.add_parser("search", help="Search for a book")
+    search_parser.add_argument("query", type=str)
 
 if __name__ == "__main__":
     main()
